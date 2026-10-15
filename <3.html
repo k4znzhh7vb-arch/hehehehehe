@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gym Log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Gochi+Hand&family=Archivo+Black&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EFEDE8;--ink:#1E201D;--grey:#8A8C86;--line:#D4D1CA;--green:#254236;--onGreen:#EFEDE8;--card:#F6F4F0;
+--hand:'Gochi Hand','ZCOOL KuaiLe','Comic Sans MS',cursive;--mono:'DM Mono',ui-monospace,Menlo,monospace;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141815;--ink:#E9E7E0;--grey:#8D9189;--line:#2C322E;--green:#2E5845;--onGreen:#EFEDE8;--card:#1B201C}}
+:root[data-theme="dark"]{--bg:#141815;--ink:#E9E7E0;--grey:#8D9189;--line:#2C322E;--green:#2E5845;--onGreen:#EFEDE8;--card:#1B201C}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background-color:var(--bg);color:var(--ink);font-family:var(--mono);font-size:14px;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#app{max-width:440px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+button:focus-visible,input:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.hand{font-family:var(--hand);font-weight:400}
+.bar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 6px}
+.ib{width:44px;height:44px;display:grid;place-items:center}
+.ib svg{width:34px;height:34px}
+.pad{padding:0 20px}
+h1{font-family:var(--hand);font-weight:400;font-size:44px;line-height:1;margin:0}
+.sub{color:var(--grey);font-size:12px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;padding:10px 16px 0;text-align:center}
+.wd{color:var(--grey);font-size:12px;padding-bottom:2px}
+.d{aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-size:14px;border:1px solid transparent}
+.d.t{border-color:var(--ink)}
+.d.on{background:var(--green);color:var(--onGreen)}
+.d.l1{opacity:.55}.d.l2{opacity:.78}
+.d.on.l1,.d.on.l2{opacity:1}
+.d.on.l1{background:color-mix(in srgb,var(--green) 55%,var(--bg))}
+.d.on.l2{background:color-mix(in srgb,var(--green) 78%,var(--bg))}
+.d.on.l1,.d.on.l2{color:var(--ink)}
+.d.on.l3{color:var(--onGreen)}
+.foot{margin-top:auto;position:relative;height:190px;background:var(--green);color:var(--onGreen);
+clip-path:polygon(0 38%,26% 38%,26% 20%,62% 20%,62% 0,100% 0,100% 100%,0 100%);display:flex;align-items:flex-end;justify-content:flex-start;padding:0 22px 26px}
+.foot button{font-family:'Archivo Black','Arial Black',Impact,sans-serif;font-size:60px;line-height:1;text-align:left;letter-spacing:-1px}.foot button span{display:inline-block;filter:url(#crayon)}
+.foot small{display:block;font-family:var(--mono);font-size:12px;opacity:.75;margin-top:4px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;min-height:112px}
+.card svg{width:54px;height:54px}
+.card b{font-family:var(--hand);font-weight:400;font-size:24px}
+.badge{position:absolute;top:8px;right:8px;background:var(--green);color:var(--onGreen);border-radius:10px;padding:1px 8px;font-size:12px}
+.btn{display:block;width:calc(100% - 40px);margin:6px 20px 18px;background:var(--green);color:var(--onGreen);border-radius:14px;padding:14px;text-align:center;font-family:var(--hand);font-size:26px}
+.btn.ghost{background:none;border:1px solid var(--ink);color:var(--ink)}
+.big{font-family:var(--hand);font-size:120px;line-height:1;text-align:center;margin:14px 0 4px}
+.step{display:flex;justify-content:center;align-items:center;gap:26px}
+.step button{width:64px;height:64px;border-radius:50%;border:1.5px solid var(--ink);font-size:32px;line-height:1}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:20px}
+.chips button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card)}
+.chips button.on{background:var(--green);color:var(--onGreen);border-color:var(--green)}
+.row{display:flex;align-items:center;gap:10px;margin:7px 0}
+.row .n{width:96px;font-family:var(--hand);font-size:22px}
+.row .b{height:16px;background:var(--green);border-radius:8px;min-width:6px}
+.stat{display:flex;gap:26px;margin:14px 0}
+.stat div b{display:block;font-family:var(--hand);font-weight:400;font-size:46px;line-height:1}
+.save{border:1px solid var(--ink);border-radius:14px;padding:16px;margin:16px 0;font-family:var(--hand);font-size:30px;text-align:center}
+label{display:block;margin:16px 0 6px;color:var(--grey);font-size:12px}
+input[type=number]{width:100%;font:inherit;font-size:20px;padding:12px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:12px}
+.note{color:var(--grey);font-size:12px;margin-top:10px}
+.sm{display:inline-block;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:6px 8px 0 0}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="crayon" x="-5%" y="-10%" width="110%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="2" seed="4" result="w"/><feDisplacementMap in="SourceGraphic" in2="w" scale="5" result="d"/><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="9" result="g"/><feColorMatrix in="g" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 0 0 0 -1" result="m"/><feComposite in="d" in2="m" operator="in"/></filter></svg>
+<div id="app"></div>
+<script>
+const P=[["chest","胸","#D9534F",'<path d="M8 24h32M12 14v20M36 14v20M5 19v10M43 19v10"/>'],
+["back","背","#3B82A0",'<path d="M8 9h32M15 9l9 30M33 9l-9 30"/>'],
+["shoulder","肩","#E8A33D",'<path d="M14 24h20M10 16v16M14 13v22M34 13v22M38 16v16"/>'],
+["arm","手臂","#7A5CA8",'<path d="M9 37c9 0 13-6 15-14 2-8 8-10 14-5M30 31c5 2 9-1 9-7"/>'],
+["leg","腿","#5B8C5A",'<path d="M8 33c6 0 8-10 8-19h10c0 8 4 10 14 12v7z"/>'],
+["glute","臀","#E27D9B",'<path d="M24 14c-10-4-19 5-14 17 3 8 12 7 14 3 2 4 11 5 14-3 5-12-4-21-14-17zM24 14v9"/>'],
+["core","核心","#2F9C95",'<rect x="14" y="8" width="20" height="32" rx="9"/><path d="M14 18h20M14 28h20M24 12v26"/>'],
+["cardio","有氧","#F28C28",'<path d="M24 39C7 27 9 12 18 12c4 0 6 3 6 5 0-2 2-5 6-5 9 0 11 15-6 27z"/>']];
+const ic=(c,p,s)=>`<svg viewBox="0 0 48 48" fill="none" stroke="${c}" stroke-linecap="round" stroke-linejoin="round" ${s||''}>${p}</svg>`;
+const pi=id=>P.find(x=>x[0]==id);
+const B="#1D5FA6",R="#E8341C",O="#F5821F",Y="#FDB515",C="#FF5A3C";
+const shoe='<path d="M8 33c6 0 8-10 8-19h10c0 8 4 10 14 12v7z"/>',heart='<path d="M24 39C7 27 9 12 18 12c4 0 6 3 6 5 0-2 2-5 6-5 9 0 11 15-6 27z"/>',peach='<path d="M24 14c-10-4-19 5-14 17 3 8 12 7 14 3 2 4 11 5 14-3 5-12-4-21-14-17z"/>',abs='<rect x="14" y="8" width="20" height="32" rx="9"/>',db='<rect x="8" y="15" width="8" height="18" rx="3"/><rect x="32" y="15" width="8" height="18" rx="3"/>';
+const IC={chest:[B,O,'<rect x="10" y="28" width="28" height="6" rx="2"/>','<path d="M5 13h38M10 8v10M38 8v10"/><rect x="10" y="28" width="28" height="6" rx="2"/><path d="M15 34v7M33 34v7"/>'],
+back:[R,Y,'<path d="M13 9l11 30 11-30z"/>','<path d="M6 9h36M13 9l11 30 11-30"/>'],
+shoulder:[B,Y,db,db+'<path d="M16 24h16M4 19v10M44 19v10"/>'],
+arm:[R,O,'<circle cx="27" cy="22" r="9"/>','<path d="M9 38c9 0 14-5 15-13 1-9 9-12 15-6M31 31c5 2 9-2 8-8"/>'],
+leg:[B,C,shoe,shoe],glute:[R,Y,peach,peach+'<path d="M24 14v9"/>'],
+core:[B,O,abs,abs+'<path d="M14 18h20M14 28h20M24 12v26"/>'],cardio:[B,R,heart,heart]};
+P.forEach(r=>{const x=IC[r[0]];r[2]=x[1];r[3]=`<g fill="${x[1]}" stroke="none" transform="translate(3 2.5)">${x[2]}</g><g stroke="${x[0]}" stroke-width="3.4">${x[3]}</g>`});
+let LG="en";try{LG=localStorage.getItem("gymlang")||"en"}catch(e){}
+const t=(z,e)=>LG=="en"?e:z;
+const EN={chest:"Chest",back:"Back",shoulder:"Shoulders",arm:"Arms",leg:"Legs",glute:"Glutes",core:"Core",cardio:"Cardio"};
+const N=p=>LG=="en"?EN[p[0]]:p[1];
+const MF=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const mf=m=>LG=="en"?MF[m]:(m+1)+"月";
+function lg(x){LG=x;try{localStorage.setItem("gymlang",x)}catch(e){}draw()}
+const pad=n=>String(n).padStart(2,"0");
+const key=(y,m,d)=>`${y}-${pad(m+1)}-${pad(d)}`;
+const mk=(y,m)=>`${y}-${pad(m+1)}`;
+let S={logs:{},fee:0,entry:0,seen:""};
+try{const r=localStorage.getItem("gymlog");if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
+const save=()=>{try{localStorage.setItem("gymlog",JSON.stringify(S))}catch(e){}};
+const now=new Date();const todayK=key(now.getFullYear(),now.getMonth(),now.getDate());
+let V={y:now.getFullYear(),m:now.getMonth()},scr="home",date=todayK,part=null,n=3;
+const $=document.getElementById("app");
+const sets=k=>Object.values(S.logs[k]||{}).reduce((a,b)=>a+b,0);
+function stats(y,m){const pre=mk(y,m);let days=0,tot=0,by={};
+for(const k in S.logs){if(k.startsWith(pre)){const s=sets(k);if(s>0){days++;tot+=s;for(const p in S.logs[k])by[p]=(by[p]||0)+S.logs[k][p]}}}
+const top=Object.entries(by).sort((a,b)=>b[1]-a[1]);return{days,tot,top}}
+const bar=(l,t,r)=>`<div class="bar">${l}<span class="hand" style="font-size:22px">${t||""}</span>${r||'<span class="ib"></span>'}</div>`;
+const back=g=>`<button class="ib" aria-label="${t("返回","Back")}" onclick="go('${g}')"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M30 10L14 24l16 14"/></svg></button>`;
+function go(s){scr=s;draw();window.scrollTo(0,0)}
+function home(){const{days}=stats(V.y,V.m),first=new Date(V.y,V.m,1),off=(first.getDay()+6)%7,dim=new Date(V.y,V.m+1,0).getDate();
+let c=t(["一","二","三","四","五","六","日"],["M","T","W","T","F","S","S"]).map(x=>`<div class="wd">${x}</div>`).join("")+"<div></div>".repeat(off);
+for(let d=1;d<=dim;d++){const k=key(V.y,V.m,d),s=sets(k),l=s>=12?3:s>=6?2:s>0?1:0;
+c+=`<button class="d${s?" on l"+l:""}${k==todayK?" t":""}" onclick="pick('${k}')" aria-label="${mf(V.m)} ${d}">${d}</button>`}
+const gear=`<button class="ib" aria-label="${t("设置","Settings")}" onclick="go('set')">${ic("#1D5FA6",'<g fill="#FDB515" stroke="none" transform="translate(3 2.5)"><path d="M8 15h29v21H8z"/></g><g stroke-width="3.4"><path d="M8 15h29v21H8zM8 15l23-7v7M30 26h7"/></g>')}</button>`;
+return bar(gear,"",`<button class="ib" style="width:auto;padding:0 6px" onclick="sum(V.y,V.m)">${t("总结","Summary")}</button>`)+
+`<div class="pad" style="display:flex;align-items:flex-end;justify-content:space-between"><div><h1>${mf(V.m)}</h1><div class="sub">${V.y} · ${t("本月去了 "+days+" 次","Gym visits: "+days)}</div></div>
+<div><button class="ib" style="display:inline-grid" aria-label="${t("上个月","Previous month")}" onclick="mv(-1)">‹</button><button class="ib" style="display:inline-grid" aria-label="${t("下个月","Next month")}" onclick="mv(1)">›</button></div></div>
+<div class="cal">${c}</div>
+<div class="foot"><button onclick="pick(todayK)"><span>TODAY!</span><small>${t("点这里记录今天练了什么","Tap to log today's workout")}</small></button></div>`}
+function mv(i){V.m+=i;if(V.m<0){V.m=11;V.y--}if(V.m>11){V.m=0;V.y++}draw()}
+function pick(k){date=k;go("today")}
+function today(){const L=S.logs[date]||{},dt=date==todayK?t("今天练了什么？","What did you train today?"):t(date.slice(5).replace("-","月")+"日练了什么？","What did you train on "+date.slice(5).replace("-","/")+"?");
+return bar(back("home"),"")+`<div class="pad"><h1>${dt}</h1><div class="sub">${t("点一个部位，再选做了几组","Pick a body part, then choose how many sets")}</div></div><div class="grid">`+
+P.map(p=>`<button class="card" onclick="op('${p[0]}')">${L[p[0]]?`<span class="badge">${L[p[0]]} ${t("组","sets")}</span>`:""}${ic(p[2],p[3])}<b>${N(p)}</b></button>`).join("")+
+`</div><button class="btn" onclick="go('home')">${t("完成","Done")}</button>`}
+function op(id){part=id;n=(S.logs[date]||{})[id]||3;go('sets')}
+function setsScr(){const p=pi(part);
+return bar(back("today"),N(p))+`<div class="pad" style="text-align:center">${ic(p[2],p[3],'width="72" height="72"')}<div class="sub">${t("今天做了几组？","How many sets?")}</div></div>
+<div class="big" id="n">${n}</div><div class="step"><button aria-label="${t("减一组","Remove a set")}" onclick="ch(-1)">−</button><button aria-label="${t("加一组","Add a set")}" onclick="ch(1)">+</button></div>
+<div class="chips">${[1,2,3,4,5,6,8,10].map(x=>`<button class="${x==n?"on":""}" onclick="n=${x};draw()">${x}</button>`).join("")}</div>
+<button class="btn" onclick="sv()">${t("保存","Save")}</button><button class="btn ghost" style="margin-top:-8px;font-family:var(--mono);font-size:14px" onclick="rm()">${t("不记这个部位","Remove this part")}</button>`}
+function ch(i){n=Math.max(1,n+i);draw()}
+function sv(){(S.logs[date]=S.logs[date]||{})[part]=n;save();go("today")}
+function rm(){if(S.logs[date]){delete S.logs[date][part];if(!Object.keys(S.logs[date]).length)delete S.logs[date]}save();go("today")}
+let SV={y:V.y,m:V.m};
+function sum(y,m){SV={y,m};go("sum")}
+function sumScr(){const{y,m}=SV,{days,tot,top}=stats(y,m),mx=top[0]?top[0][1]:1,fee=+S.fee||0,en=+S.entry||0;
+const diff=days*en-fee,has=fee||en,ended=y<now.getFullYear()||(y==now.getFullYear()&&m<now.getMonth());
+let body=days?`<div class="stat"><div><b>${days}</b>${t("去了几次","Visits")}</div><div><b>${tot}</b>${t("总共几组","Total sets")}</div></div>`+
+(top[0]?`<div class="sub">${t("这个月练得最多","Most trained")}</div><div class="hand" style="font-size:34px;margin:2px 0 10px">${N(pi(top[0][0]))}　${top[0][1]} ${t("组","sets")}</div>`:"")+
+top.map(([id,v])=>`<div class="row"><span class="n">${N(pi(id))}</span><span class="b" style="width:${v/mx*60}%;background:${pi(id)[2]}"></span><span>${v}</span></div>`).join("")
+:`<p class="note">${t("这个月还没有记录。回到日历，点 TODAY! 开始记。","Nothing logged this month yet. Go back to the calendar and tap TODAY! to start.")}</p>`;
+let money=!has?`<p class="note">${t("想看省了多少钱？点左上角的图标，填健身房月费和单次入场费。","Want to see how much you saved? Tap the top-left icon and enter your gym membership and per-visit fee.")}</p>`:
+`<div class="save">${diff>=0?t(`买月卡 省了 RM${diff}`,`Membership saved you RM${diff}`):t(`买月卡 多花了 RM${-diff}`,`Membership cost RM${-diff} extra`)}</div><div class="sub">${t("月卡","Membership")} RM${fee}　·　${t("单次","Per visit")} RM${en} × ${days} = RM${days*en}</div>`;
+return bar(back("home"),t(`${y}年${m+1}月`,`${mf(m)} ${y}`))+`<div class="pad"><h1>${ended?t("月底总结","Month-end summary"):t("本月总结","This month")}</h1>${body}${money}</div><div style="height:30px"></div>`}
+function setScr(){return bar(back("home"),t("设置","Settings"))+`<div class="pad"><h1>${t("健身房","Gym")}</h1>
+<label for="f">${t("这个月签健身房，一共多少钱？(RM)","Gym membership this month, total (RM)")}</label><input id="f" type="number" inputmode="decimal" min="0" value="${S.fee||""}" oninput="S.fee=this.value;save()">
+<label for="e">${t("单次入场费 (RM)","Entry fee per visit (RM)")}</label><input id="e" type="number" inputmode="decimal" min="0" value="${S.entry||""}" oninput="S.entry=this.value;save()">
+<p class="note">${t("月底会自动算：去了几次 × 单次入场费 − 月费 = 省了多少。","At month end: visits × entry fee − membership = what you saved.")}</p>
+<label>${t("备份数据","Backup")}</label><button class="sm" onclick="ex()">${t("导出备份","Export backup")}</button><label class="sm" style="margin:6px 0 0;color:var(--ink)">${t("导入备份","Import backup")}<input type="file" accept=".json" hidden onchange="im(this)"></label>
+<p class="note">${t("数据自动保存在这个浏览器里。换手机或清除浏览器数据前，请先导出备份。","Your data saves automatically in this browser. Export a backup before switching phones or clearing browser data.")}</p><label>Language</label><button class="sm" onclick="lg('en')">English</button><button class="sm" onclick="lg('zh')">中文</button></div>`}
+async function ex(){try{const d=await claude.use("downloads");if(!d)throw 0;await d.save({filename:"gym-log-backup.json",data:JSON.stringify(S)})}catch(e){alert(t("这里暂时无法导出备份","Export isn't available here"))}}
+function im(i){const f=i.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(o&&o.logs){S=Object.assign(S,o);save();alert(t("已导入","Imported"));go("home")}}catch(e){alert(t("文件不对，导入失败","Wrong file, import failed"))}};r.readAsText(f)}
+function draw(){$.innerHTML={home,today,sets:setsScr,sum:sumScr,set:setScr}[scr]()}
+(function(){const pm=new Date(now.getFullYear(),now.getMonth()-1,1),k=mk(pm.getFullYear(),pm.getMonth());
+if(S.seen!==k&&stats(pm.getFullYear(),pm.getMonth()).days>0){S.seen=k;save();SV={y:pm.getFullYear(),m:pm.getMonth()};scr="sum"}draw()})();
+</script>
+</body>
+</html>
